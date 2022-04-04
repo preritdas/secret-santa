@@ -33,7 +33,7 @@ def main():
         # Assign person to another person
         people.remove(person)
         assigned = random.choice(people)
-        # Duplicity check
+        # Duplicate check
         while assigned in already_assigned:
             assigned = random.choice(people)
         # Store the assignment for future iterations
