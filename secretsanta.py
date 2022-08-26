@@ -14,40 +14,38 @@ nexmo_client = nexmo.Client(
 sms = nexmo.Sms(client = nexmo_client)
 
 
-def alert_assignment(person: str, assigned: str):
+def alert_assignment(person: str, assigned: str, phone: str):
     """Alerts a person who they were assigned to."""
     person = person.title()
     sms.send_message(
         {
             "from": _keys.nexmo_sender,
-            "to": _keys.people[person],
+            "to": phone,
             "text": f"{person}, you have been assigned to {assigned}."
         }
     )
 
 
-def run():
+def assign(people: list[dict]):
     """Main execution function."""
     already_assigned = []
-    for person in _keys.people:
-        # Local list of people
-        people = list(_keys.people.keys())
+    for person in people:
+        local_people = [person["Name"] for person in people]
 
         # Assign person to another person
-        people.remove(person)
-        assigned = random.choice(people)
+        local_people.remove(person["Name"])
+        assigned = random.choice(local_people)
+
         # Duplicate check
         while assigned in already_assigned:
-            assigned = random.choice(people)
+            assigned = random.choice(local_people)
+
         # Store the assignment for future iterations
         already_assigned.append(assigned)
 
         # Alert the person who they were assigned to
         alert_assignment(
-            person = person,
-            assigned = assigned
+            person = person["Name"],
+            assigned = assigned,
+            phone = person["Phone"]
         )
-
-
-if __name__ == "__main__":
-    main()
