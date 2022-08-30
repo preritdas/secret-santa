@@ -28,9 +28,10 @@ def alert_assignment(person: str, assigned: str, phone: str):
     )
 
 
-def assign(people: list[dict], alert: bool = True):
+def assign(people: list[dict], alert: bool = True) -> dict[str, str]:
     """Main execution function."""
     already_assigned = []
+    assignments = {}
     for person in people:
         local_people = [person["Name"] for person in people]
 
@@ -42,6 +43,9 @@ def assign(people: list[dict], alert: bool = True):
         while assigned in already_assigned:
             assigned = random.choice(local_people)
 
+        # Store the assignment for return
+        assignments[person["Name"]] = assigned
+
         # Store the assignment for future iterations
         already_assigned.append(assigned)
 
@@ -52,3 +56,5 @@ def assign(people: list[dict], alert: bool = True):
             assigned = assigned,
             phone = person["Phone"]
         )
+
+    return assignments
