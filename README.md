@@ -1,3 +1,6 @@
+![pytest](https://github.com/preritdas/secret-santa/actions/workflows/pytest.yml/badge.svg)
+
+
 # Secret Santa
 
 A simple script to assign a group of people to unique recipients and text them their assignment. 
