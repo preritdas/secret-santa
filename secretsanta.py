@@ -6,16 +6,18 @@ import random
 import _keys
 
 
-# Instantiate Nexmo client
-nexmo_client = nexmo.Client(
-    key = _keys.nexmo_api_key,
-    secret = _keys.nexmo_api_secret
-)
-sms = nexmo.Sms(client = nexmo_client)
-
-
 def alert_assignment(person: str, assigned: str, phone: str):
-    """Alerts a person who they were assigned to."""
+    """
+    Alerts a person who they were assigned to.
+    Nexmo instantiation happens in here because there is no performance bottleneck
+    whatsoever, and it makes pytests much more convenient.
+    """
+    nexmo_client = nexmo.Client(
+        key = _keys.nexmo_api_key,
+        secret = _keys.nexmo_api_secret
+    )
+    sms = nexmo.Sms(client = nexmo_client)
+
     person = person.title()
     sms.send_message(
         {
@@ -26,7 +28,7 @@ def alert_assignment(person: str, assigned: str, phone: str):
     )
 
 
-def assign(people: list[dict]):
+def assign(people: list[dict], alert: bool = True):
     """Main execution function."""
     already_assigned = []
     for person in people:
@@ -44,6 +46,7 @@ def assign(people: list[dict]):
         already_assigned.append(assigned)
 
         # Alert the person who they were assigned to
+        if not alert: continue
         alert_assignment(
             person = person["Name"],
             assigned = assigned,
