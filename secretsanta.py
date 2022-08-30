@@ -3,7 +3,19 @@ import nexmo
 
 # Local imports
 import random 
-import _keys
+
+
+def create_sms_object() -> tuple[nexmo.Sms, str]:
+    """
+    Returns a tuple of Sms object and sender.
+    """
+    import _keys 
+
+    nexmo_client = nexmo.Client(
+        key = _keys.nexmo_api_key,
+        secret = _keys.nexmo_api_secret
+    )
+    return nexmo.Sms(client = nexmo_client), _keys.nexmo_sender
 
 
 def alert_assignment(person: str, assigned: str, phone: str):
@@ -12,16 +24,12 @@ def alert_assignment(person: str, assigned: str, phone: str):
     Nexmo instantiation happens in here because there is no performance bottleneck
     whatsoever, and it makes pytests much more convenient.
     """
-    nexmo_client = nexmo.Client(
-        key = _keys.nexmo_api_key,
-        secret = _keys.nexmo_api_secret
-    )
-    sms = nexmo.Sms(client = nexmo_client)
+    sms, sender = create_sms_object()
 
     person = person.title()
     sms.send_message(
         {
-            "from": _keys.nexmo_sender,
+            "from": sender,
             "to": phone,
             "text": f"{person}, you have been assigned to {assigned}."
         }
