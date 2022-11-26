@@ -4,6 +4,9 @@ import nexmo
 # Local imports
 import random 
 
+# Project
+import messaging
+
 
 def create_sms_object() -> tuple[nexmo.Sms, str]:
     """
@@ -18,25 +21,23 @@ def create_sms_object() -> tuple[nexmo.Sms, str]:
     return nexmo.Sms(client = nexmo_client), _keys.nexmo_sender
 
 
-def alert_assignment(person: str, assigned: str, phone: str):
+def alert_assignment(person: str, assigned: str, email: str) -> None:
     """
     Alerts a person who they were assigned to.
     Nexmo instantiation happens in here because there is no performance bottleneck
     whatsoever, and it makes pytests much more convenient.
     """
-    sms, sender = create_sms_object()
-
     person = person.title()
-    sms.send_message(
-        {
-            "from": sender,
-            "to": phone,
-            "text": f"{person}, you have been assigned to {assigned}."
-        }
+
+    return messaging.send_email(
+        email, 
+        person, 
+        "Your Secret Santa Assignment", 
+        f"{person}, you have been assigned to {assigned}."
     )
 
 
-def assign(people: list[dict], alert: bool = True) -> dict[str, str]:
+def old_assign(people: list[dict], alert: bool = True) -> dict[str, str]:
     """Main execution function."""
     already_assigned = []
     assignments = {}
@@ -62,7 +63,28 @@ def assign(people: list[dict], alert: bool = True) -> dict[str, str]:
         alert_assignment(
             person = person["Name"],
             assigned = assigned,
-            phone = person["Phone"]
+            email = person["Email"]
         )
 
     return assignments
+
+
+def assign(people: list[dict], alert: bool = True) -> dict[str, str]:
+    """Re-implemented."""
+    assignments = random.sample(people, len(people))
+
+    return_sequence = {
+        person["Name"]: assigned["Name"] for person, assigned in zip(people, assignments)
+    }
+
+    if not alert:
+        return return_sequence
+
+    for person, assigned in zip(people, assignments):
+        alert_assignment(
+            person = person["Name"],
+            assigned = assigned["Name"],
+            email = person["Email"]
+        )
+
+    return return_sequence

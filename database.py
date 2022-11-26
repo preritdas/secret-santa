@@ -32,15 +32,15 @@ def reset_people() -> None:
         f.write("[]")
 
 
-def add_person(name: str, phone: str) -> bool:
+def add_person(name: str, email: str) -> bool:
     """
-    Returns True if successful, false if a person with that name and phone number
+    Returns True if successful, false if a person with that name and email 
     already exists in the people.json database.
     """
     db = read_people()
 
-    assert isinstance(name, str) and isinstance(phone, str)
-    insert = {"Name": name, "Phone": phone}
+    assert isinstance(name, str) and isinstance(email, str)
+    insert = {"Name": name, "Email": email}
 
     # Check for duplication
     for person in db:
