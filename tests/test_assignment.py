@@ -4,27 +4,27 @@ import secretsanta
 people = [
     {
         "Name": "Person 1",
-        "Phone": "18271928327"
+        "Email": "18271928327"
     },
     {
         "Name": "Person 2",
-        "Phone": "19283019283"
+        "Email": "19283019283"
     },
     {
         "Name": "Person 3",
-        "Phone": "19283019283"
+        "Email": "19283019283"
     },
     {
         "Name": "Person 4",
-        "Phone": "19283019283"
+        "Email": "19283019283"
     },
     {
         "Name": "Person 5",
-        "Phone": "19283019283"
+        "Email": "19283019283"
     },
     {
         "Name": "Person 6",
-        "Phone": "19283019283"
+        "Email": "19283019283"
     },
 ]
 
