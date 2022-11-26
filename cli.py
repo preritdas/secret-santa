@@ -19,21 +19,20 @@ def addperson(
         ...,
         help = "Name of the person you're adding."
     ),
-    phone: int = typer.Argument(
+    email : str = typer.Argument(
         ...,
-        help = "Phone number for assignment alerts."
+        help = "Email for assignment alerts."
     )
 ):
     """
     Adds a new person to the santa registry.
     """
     name = name.title()
-    phone = str(phone)
 
-    res = database.add_person(name, phone)
+    res = database.add_person(name, email)
     if not res:
         console.print(
-            f"[green]{name}[/] with phone number [green]{phone}[/] is already in the "
+            f"[green]{name}[/] with email [green]{email}[/] is already in the "
             "database."
         )
         return
