@@ -30,6 +30,16 @@ jobs:
 
       - name: Install test dependencies
         run: pip install pytest
+        
+      - name: Inject keys
+        uses: knicknic/os-specific-run@v1.0.3
+        with:
+          linux: |
+            echo -en '${{ secrets.KEYS_INI_FAKE }}' >> keys.ini
+          macos: |
+            echo -en '${{ secrets.KEYS_INI_FAKE }}' >> keys.ini
+          windows: |
+            New-Item "keys.ini" -ItemType File -Value "${{ secrets.KEYS_INI_FAKE }}"
 
       - name: Run test with pytest
         run: python -m pytest
