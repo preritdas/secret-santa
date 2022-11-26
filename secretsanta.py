@@ -21,7 +21,7 @@ def create_sms_object() -> tuple[nexmo.Sms, str]:
     return nexmo.Sms(client = nexmo_client), _keys.nexmo_sender
 
 
-def alert_assignment(person: str, assigned: str, email: str) -> None:
+def alert_assignment(person: str, assigned: str, email: str, budget: float = 50) -> None:
     """
     Alerts a person who they were assigned to.
     Nexmo instantiation happens in here because there is no performance bottleneck
@@ -33,7 +33,7 @@ def alert_assignment(person: str, assigned: str, email: str) -> None:
         email, 
         person, 
         "Your Secret Santa Assignment", 
-        f"{person}, you have been assigned to {assigned}."
+        f"{person}, you have been assigned to {assigned}. The budget is ${int(budget)}."
     )
 
 
